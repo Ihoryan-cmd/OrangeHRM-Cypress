@@ -1,0 +1,24 @@
+{
+  "invalidCredentials": [
+    {
+      "testName": "invalid username",
+      "field": "username",
+      "invalidValue": "WrongAdmin"
+    },
+    {
+      "testName": "invalid password",
+      "field": "password",
+      "invalidValue": "WrongPassword"
+    }
+
+  ],
+
+    "emptyCredentials": [
+    {
+      "field": "username"
+    },
+    {
+      "field": "password"
+        }
+    ]
+}
