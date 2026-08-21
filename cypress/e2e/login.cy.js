@@ -5,17 +5,36 @@ describe('Login Page', () => {
 
     beforeEach(() => {
         cy.visit('/')
+        cy.get('[alt="orangehrm-logo"]')
+        .should('be.visible')
     })
 
-    it('logs in with valid credentials', () => {
+        it('Main LoginPage elements are visible', () =>{
+            cy.get('[name="username"]').should('be.visible')
+            cy.get('[name="password"]').should('be.visible')
+            cy.get('[type="submit"]').should('be.visible')
+            cy.get('.orangehrm-login-forgot-header').should('be.visible').and('contain.text', 'Forgot your password?')
+        })
+
+        it('Input fields should be empty', () =>{
+            cy.get('[name="username"]').should('have.value', '')
+            cy.get('[name="password"]').should('have.value', '')
+        })
+
+        it('Password field has type: "password"', () =>{
+            cy.get('[name="password"]').should('have.attr', 'type', 'password')
+        })
+
+
+        it('logs in with valid credentials', () => {
         cy.env(['username', 'password']).then(({username, password}) => {
             cy.login(username, password)
         })
-
         cy.url().should('include', '/dashboard')
-    })
-
-    loginData.invalidCredentials.forEach((data) => {
+        cy.get('.oxd-topbar-header-breadcrumb-module').should('be.visible').and('contain.text', 'Dashboard')
+        })
+   
+   loginData.invalidCredentials.forEach((data) => {
 
 
     it(`shows error for ${data.testName}`, () => {
@@ -52,11 +71,17 @@ describe('Login Page', () => {
             .parents('.oxd-input-group')
             .find('.oxd-input-field-error-message')
             .should('have.text', 'Required')
-        
     })
-
     })
-
-
-  
+    it('Forgot Password link navigates to Reset Password page', () =>{
+        cy.get('.orangehrm-login-forgot-header').click()
+        cy.get('.orangehrm-forgot-password-title').should('be.visible').and('contain.text', 'Reset Password')
+    })
+    it('Back to Login link navigates back to Login page', () => {
+        cy.get('.orangehrm-login-forgot-header').click()
+        cy.get('.orangehrm-forgot-password-title').should('be.visible').and('contain.text', 'Reset Password')
+        cy.get('.orangehrm-forgot-password-reset--link').click()
+        cy.get('[alt="orangehrm-logo"]')
+        .should('be.visible')
+    })
 })
