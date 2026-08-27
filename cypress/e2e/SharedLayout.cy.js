@@ -7,7 +7,7 @@ describe('sharedLayout', () =>{
             cy.login(username, password)
         })
     })
-    describe('Visibility of all elements', () => {
+    describe('Shared Elements', () => {
         it('Shared layout elements are visible', () =>{
             cy.get('[alt="client brand banner"]').should('be.visible');
             cy.get('[placeholder="Search"]').should('be.visible');
@@ -29,7 +29,7 @@ describe('sharedLayout', () =>{
         })
     })
 
-    describe('Navigation sidebar', () => {
+    describe('Sidebar Navigation', () => {
 
     it('Admin link navigates to Admin page', () => {
         cy.contains('.oxd-main-menu-item--name', 'Admin').click()
@@ -156,7 +156,7 @@ describe('sharedLayout', () =>{
         cy.contains('.oxd-main-menu-item--name', 'PIM').should('not.exist');
     })
 
-    it('Wrap button is working properly', () =>{
+    it('Sidebar can be collapsed and expanded', () =>{
         cy.get('.bi-chevron-left').click()
         cy.get('.bi-chevron-right').should('be.visible');
         cy.get('.bi-chevron-right').click()
@@ -165,9 +165,9 @@ describe('sharedLayout', () =>{
     })
 
 })
-    describe('Profile button', () =>{
+    describe('Profile Menu', () =>{
 
-        it('profile buton is working', () => {
+        it('Profile menu displays all available options', () => {
         cy.get('[class="oxd-userdropdown-name"]').click();
         cy.get('[class="oxd-userdropdown-link"]').should('be.visible').and('contain.text', 'About');
         cy.get('[class="oxd-userdropdown-link"]').should('be.visible').and('contain.text', 'Support');
@@ -182,13 +182,13 @@ describe('sharedLayout', () =>{
             cy.get('.oxd-dialog-close-button-position').click();
         })
 
-        it('Support button is working', () => {
+        it('Support link opens Support page', () => {
             cy.get('[class="oxd-userdropdown-name"]').click();
             cy.contains('.oxd-userdropdown-link', 'Support').click();
             cy.get('.orangehrm-main-title').should('be.visible').and('contain.text', 'Getting Started with OrangeHRM');
         })
         
-        it('Change Password button is working', () => {
+        it('Change Password link opens Update Password page', () => {
             cy.get('[class="oxd-userdropdown-name"]').click();
             cy.contains('.oxd-userdropdown-link', 'Change Password').click();
             cy.get('.orangehrm-main-title').should('be.visible').and('contain.text', 'Update Password');

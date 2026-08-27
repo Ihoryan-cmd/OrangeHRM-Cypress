@@ -1,0 +1,105 @@
+{
+    "requiredFieldsOnly": {
+            "firstName": "ihoryan",
+            "lastName": "tovtt"
+        },
+
+    "allFields": {
+            "firstName": "ihoryan",
+            "middleName": "Lol",
+            "lastName": "tovti",
+            "employeeId": "47732"
+        },
+
+    "employeeWithPhoto": {
+            "firstName": "ihoryans",
+            "lastName": "tovtiw",
+            "photo": "employeePhoto.JPG"
+        },
+    
+    "withoutRequiredFields": [
+        {
+            "missingField": "First Name",
+            "firstName": "",
+            "lastName":"tovtiw"
+        },
+        {
+            "missingField": "Last Name",
+            "firstName":"ihoryands",
+            "lastName": ""
+        }
+    ],
+
+    "duplicatedId": {
+            "firstName": "asdasd",
+            "lastName":"tovtiw"
+    },
+
+    "fieldsOverMaximumLength": [
+        {
+            "testName": "firstName",
+            "firstName": "qwertyuiop[]asdfghjkl;'zxcvbnm,",
+            "lastName": "tovtik",
+            "warningMessage": "Should not exceed 30 characters"
+        },
+        {
+            "testName": "middleName",
+            "firstName": "ihoruas",
+            "middleName": "qwertyuiop[]asdfghjkl;'zxcvbnm,",
+            "lastName": "tovfjdf",
+            "warningMessage": "Should not exceed 30 characters"
+        },
+        {
+            "testName": "lastName",
+            "firstName": "ihoryan",
+            "lastName": "qwertyuiop[]asdfghjkl;'zxcvbnm,",
+            "warningMessage": "Should not exceed 30 characters"
+        },
+        {
+            "testName": "employeeId",
+            "firstName": "ihoryan",
+            "lastName": "tovfjdfed",
+            "employeeId": "12345678910",
+            "warningMessage": "Should not exceed 10 characters"
+        }
+    ],
+
+    "createLoginDetails": {
+            "firstName": "ihoryan",
+            "lastName": "tovtt",
+            "username": "poplavok",
+            "password": "2003638=Ti",
+            "confirmPassword": "2003638=Ti"
+        },
+    
+    "createLoginDetailsWithMissingRequiredFields": [
+        {
+            "fieldName": "username",
+            "firstName": "ihoryan",
+            "lastName": "tovtt",
+            "username": "",
+            "password": "2003638=Ti",
+            "confirmPassword": "2003638=Ti",
+            "warningMessage": "Required"
+        },
+        {
+            "fieldName": "password",
+            "firstName": "ihoryuan",
+            "lastName": "tovtt",
+            "username": "poplavoks",
+            "password": "",
+            "confirmPassword": "2003638=Ti",
+            "warningMessage": "Required"
+        },
+        {
+            "fieldName": "username",
+            "firstName": "ihoryanwd",
+            "lastName": "tovtt",
+            "username": "poplavoks",
+            "password": "2003638=Ti",
+            "confirmPassword": "",
+            "warningMessage": "Passwords do not match"
+        }
+    ]
+
+}

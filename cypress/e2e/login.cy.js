@@ -1,6 +1,5 @@
 /// <reference types="cypress" />
 import loginData from '../fixtures/loginData.json'
-loginData.invalidCredentials
 describe('Login Page', () => {
 
     beforeEach(() => {
