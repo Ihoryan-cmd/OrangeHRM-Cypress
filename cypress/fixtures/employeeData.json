@@ -30,9 +30,10 @@
         }
     ],
 
-    "duplicatedId": {
-            "firstName": "asdasd",
-            "lastName":"tovtiw"
+    "duplicatedId": 
+    {
+        "firstName": "ifogfgfdg",
+        "lastName":"tovtiw"
     },
 
     "fieldsOverMaximumLength": [
@@ -67,7 +68,7 @@
     "createLoginDetails": {
             "firstName": "ihoryan",
             "lastName": "tovtt",
-            "username": "poplavok",
+            "username": "p545toplavok",
             "password": "2003638=Ti",
             "confirmPassword": "2003638=Ti"
         },
@@ -100,6 +101,104 @@
             "confirmPassword": "",
             "warningMessage": "Passwords do not match"
         }
-    ]
+    ],
 
+    "usernameWithOverMaxAndLessMinLength":[
+        {   
+            "testName": " < 5",
+            "firstName": "ihoryanwd",
+            "lastName": "tovtt",
+            "username": "popl",
+            "password": "2003638=Ti",
+            "confirmPassword": "2003638=Ti",
+            "warningMessage": "Should be at least 5 characters"
+        },
+
+        {
+            "testName": " > 40",
+            "firstName": "ihoryanwd",
+            "lastName": "tovtt",
+            "username": "popldfdsfdsfrdsfdssdfdsfdsfdsfdsfdsfggluf",
+            "password": "2003638=Ti",
+            "confirmPassword": "2003638=Ti",
+            "warningMessage": "Should not exceed 40 characters"
+        }
+    ],
+
+    "duplicatedUsername":{
+            "firstName": "ihoryanwd",
+            "lastName": "tovtt",
+            "username": "poplavochek1",
+            "password": "2003638=Ti",
+            "confirmPassword": "2003638=Ti",
+            "warningMessage": "Username already exists"
+    },
+
+    "passwordValidation": [
+        {
+            "testName": "Password length is < 8",
+            "firstName": "ihoryanwd",
+            "lastName": "tovtt",
+            "username": "poplewwdfdsfdsf",
+            "password": "20036",
+            "confirmPassword": "20036",
+            "warningMessage": "Should have at least 8 characters"
+        },
+        {
+            "testName": "Password has no uppercase letter",
+            "firstName": "ihoryanwd",
+            "lastName": "tovtt",
+            "username": "poplwedfdsfdsf",
+            "password": "2003638=ti",
+            "confirmPassword": "2003638=ti",
+            "warningMessage": "Your password must contain minimum 1 upper-case letter"
+        },
+        {
+            "testName": "Password has no lowercase letter",
+            "firstName": "ihoryanwd",
+            "lastName": "tovtt",
+            "username": "popldffwdsfdsf",
+            "password": "2003638=TI",
+            "confirmPassword": "2003638=TI",
+            "warningMessage": "Your password must contain minimum 1 lower-case letter"
+        },
+        {
+            "testName": "Password has no number",
+            "firstName": "ihoryanwd",
+            "lastName": "tovtt",
+            "username": "poplddsfdsfdsf",
+            "password": "Ihoryannn",
+            "confirmPassword": "Ihoryannn",
+            "warningMessage": "Your password must contain minimum 1 number"
+        },
+        {
+            "testName": "Password has no special character",
+            "firstName": "ihoryanwd",
+            "lastName": "tovtt",
+            "username": "popldfdsfdsfdsf",
+            "password": "2003638Ti",
+            "confirmPassword": "2003638Ti",
+            "warningMessage": "Your password must contain minimum 1 special character"
+        },
+        {
+            "testName": "Password length is > 64",
+            "firstName": "ihoryanwd",
+            "lastName": "tovtt",
+            "username": "popldwerfdsfdsf",
+            "password": "2003638=Ti0.0.010201020102010201020102010201020102010201020102010",
+            "confirmPassword": "2003638=Ti0.0.010201020102010201020102010201020102010201020102010",
+            "warningMessage": "Should not exceed 64 characters"
+        }
+    ],
+
+    "confirmPassword": {
+           
+        "firstName": "ihoryanwd",
+        "lastName": "tovtt",
+        "username": "poplavok12qweqws",
+        "password": "2003638=Ti",
+        "confirmPassword": "2003638=Tii",
+        "warningMessage": "Passwords do not match"
+    }
 }
+

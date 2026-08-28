@@ -1,201 +1,294 @@
 import employeeData from '../../../fixtures/employeeData.json'
+import addEmployeePage from '../../../support/pages/AddEmployeePage'
+
 describe('Add Employee', () => {
+
     beforeEach(() => {
         cy.visit('/')
+
         cy.get('[alt="orangehrm-logo"]')
-        .should('be.visible')
-         cy.env(['username', 'password']).then(({username, password}) => {
+            .should('be.visible')
+
+        cy.env(['username', 'password']).then(({username, password}) => {
             cy.login(username, password)
         })
-        cy.contains('.oxd-main-menu-item--name', 'PIM').click();
-        cy.contains('.oxd-topbar-body-nav-tab-item', 'Add Employee').click();
+
+        addEmployeePage.openFromPimMenu()
     })
-    // describe('Page Load and Initial State', () => {
-    //     it('Add employee page is loaded', () =>{
-    //         cy.url().should('include', '/addEmployee');
-    //         cy.get('.orangehrm-main-title').should('be.visible').and('contain.text', 'Add Employee');
-    //     })
 
-    //     it('All elements are visible', () =>{
-    //         cy.get('[name="firstName"]').should('be.visible');
-    //         cy.get('[name="middleName"]').should('be.visible')
-    //         cy.get('[name="lastName"]').should('be.visible')
-    //         cy.contains('label', 'Employee Id').parents('.oxd-input-group').find('input').should('be.visible');
-    //         cy.get('.oxd-switch-wrapper').should('be.visible')
-    //         cy.get('.employee-image-action').should('be.visible')
-    //         cy.get('.oxd-button--ghost').should('be.visible')
-    //         cy.get('.orangehrm-left-space').should('be.visible')
-    //     })
 
-    //     it('Employee ID already generated', () =>{
-    //         cy.contains('label', 'Employee Id')
-    //         .parents('.oxd-input-group')
-    //         .find('input')
-    //         .should('not.have.value', '')
-    //     })
+    describe('Page Load and Initial State', () => {
 
-    //     it('Fields that should be empty are empty', () =>{
-    //         cy.get('[name="firstName"]').should('have.value', '');
-    //         cy.get('[name="middleName"]').should('have.value', '')
-    //         cy.get('[name="lastName"]').should('have.value', '')
-    //     })
+        it('Add Employee page is loaded', () => {
+            cy.url().should('include', '/addEmployee')
 
-    //     it('Create Login Details checkbox is not checked', () =>{
-    //         cy.get('.oxd-switch-wrapper input[type="checkbox"]')
-    //         .should('not.be.checked')
-    //     })
-    // })
+            addEmployeePage.mainTitle()
+                .should('be.visible')
+                .and('contain.text', 'Add Employee')
+        })
 
-    // describe('Create an employee', () =>{
-    //         it('Create an employee with required fields', () =>{
-    //             const data = employeeData.requiredFieldsOnly
-    //             cy.get('[name="firstName"]').type(data.firstName);
-    //             cy.get('[name="lastName"]').type(data.lastName);
-                // cy.contains('label', 'Employee Id').parents('.oxd-input-group').find('input').invoke('val').as('employeeId')
-                // cy.get('[type="submit"]').click();
-                // cy.get('.orangehrm-main-title').should('be.visible').and('contain.text', 'Personal Details')
-                // cy.contains('.oxd-topbar-body-nav-tab-item', 'Employee List').click();
-                // cy.get('@employeeId').then((employeeId) => {
-                // cy.get('.oxd-padding-cell')
-                //     .should('contain.text', employeeId)
-    //             })
-    //         })
 
-    //         it('Create employee with all fields', () =>{
-    //             const data = employeeData.allFields
+        it('All elements are visible', () => {
+            addEmployeePage.firstNameInput().should('be.visible')
+            addEmployeePage.middleNameInput().should('be.visible')
+            addEmployeePage.lastNameInput().should('be.visible')
+            addEmployeePage.employeeIdInput().should('be.visible')
+            addEmployeePage.loginDetailsToggle().should('be.visible')
+            addEmployeePage.profileImageButton().should('be.visible')
+            addEmployeePage.cancelButton().should('be.visible')
+            addEmployeePage.saveButton().should('be.visible')
+        })
 
-    //             cy.get('[name="firstName"]').type(data.firstName);
-    //             cy.get('[name="middleName"]').type(data.middleName);
-    //             cy.get('[name="lastName"]').type(data.lastName);
-    //             cy.contains('label', 'Employee Id').parents('.oxd-input-group').find('input').clear().type(data.employeeId);
-    //             cy.get('[type="submit"]').click();
-    //             cy.get('.orangehrm-main-title').should('be.visible').and('contain.text', 'Personal Details')
-    //             cy.contains('.oxd-topbar-body-nav-tab-item', 'Employee List').click();
-    //             cy.get('.oxd-padding-cell').should('contain.text', data.employeeId);
-    //         })
 
-    //         it('Create an employye with the picture', () =>{
-    //             const data = employeeData.employeeWithPhoto
-    //             cy.get('[name="firstName"]').type(data.firstName);
-    //             cy.get('[name="lastName"]').type(data.lastName);
-    //             cy.get('[class="oxd-file-input"]').selectFile('cypress/fixtures/employeePhoto.jpg',{ force: true });
-    //             cy.contains('label', 'Employee Id').parents('.oxd-input-group').find('input').invoke('val').as('employeeId')
-    //             cy.get('[type="submit"]').click();
-    //             cy.get('.orangehrm-main-title').should('be.visible').and('contain.text', 'Personal Details')
-    //             cy.contains('.oxd-topbar-body-nav-tab-item', 'Employee List').click();
-    //             cy.get('@employeeId').then((employeeId) => {
-    //             cy.get('.oxd-padding-cell')
-    //                 .should('contain.text', employeeId)
-    //             })
-    //         })
-        
-    // })
+        it('Employee ID is already generated', () => {
+            addEmployeePage.employeeIdInput()
+                .should('not.have.value', '')
+        })
 
-    // describe('Create an employee(negative scenarious)', () =>{
-    //     employeeData.withoutRequiredFields.forEach((data) => {
 
-    //         it(`Create an employee without ${data.missingField}`, () => {
-    //         if(data.firstName !== ''){
-    //             cy.get('[name="firstName"]').type(data.firstName);
-    //         }       
-    //         if(data.lastName !== ''){
-    //             cy.get('[name="lastName"]').type(data.lastName);
-    //         }
-    //         cy.get('[type="submit"]').click();
-    //         cy.get('.oxd-input-group__message').should('be.visible').and('contain.text', 'Required');         
-    //         })
-            
-    //     })
+        it('Fields that should be empty are empty', () => {
+            addEmployeePage.firstNameInput().should('have.value', '')
+            addEmployeePage.middleNameInput().should('have.value', '')
+            addEmployeePage.lastNameInput().should('have.value', '')
+        })
 
-    //         it(' Create an employee with duplicated Id', () =>{
-    //             const data = employeeData.duplicatedId
-    //             const employeeId = String(Math.floor(Math.random() * 900000) + 100000)
-    //             cy.get('[name="firstName"]').type(data.firstName);
-    //             cy.get('[name="lastName"]').type(data.lastName);
-    //             cy.contains('label', 'Employee Id').parents('.oxd-input-group').find('input').clear().type(employeeId);
-    //             cy.get('[type="submit"]').click();
-    //             cy.get('.orangehrm-main-title').should('be.visible').and('contain.text', 'Personal Details')
-    //             cy.contains('.oxd-topbar-body-nav-tab-item', 'Add Employee').click();
-    //             cy.get('[name="firstName"]').type(data.firstName);
-    //             cy.get('[name="lastName"]').type(data.lastName);
-    //             cy.contains('label', 'Employee Id').parents('.oxd-input-group').find('input').clear().type(employeeId);
-    //             cy.get('[type="submit"]').click();
-    //             cy.get('.oxd-input-group__message').should('be.visible').and('contain.text', 'Employee Id already exists');
-    //         })
-        
-    //         employeeData.fieldsOverMaximumLength.forEach((data) => {   
-    //         it(`Create an employee with invalid length in ${data.testName}`, () =>{
-    //               if(data.testName === 'firstName'){
-    //                 cy.get('[name="firstName"]').type(data.firstName);
-    //                 cy.get('[name="lastName"]').type(data.lastName);
-    //               }
-    //               if(data.testName === 'middleName'){
-    //                 cy.get('[name="firstName"]').type(data.firstName);
-    //                 cy.get('[name="middleName"]').type(data.middleName);
-    //                 cy.get('[name="lastName"]').type(data.lastName);                   
-    //               }
-    //               if(data.testName === 'lastName'){
-    //                 cy.get('[name="firstName"]').type(data.firstName);
-    //                 cy.get('[name="lastName"]').type(data.lastName);                    
-    //               }
-    //               if(data.testName === 'employeeId'){
-    //                 cy.get('[name="firstName"]').type(data.firstName);
-    //                 cy.get('[name="lastName"]').type(data.lastName);
-    //                 cy.contains('label', 'Employee Id').parents('.oxd-input-group').find('input').clear().type(data.employeeId);                    
-    //               }
-    //             cy.get('[type="submit"]').click();
-    //             cy.get('.oxd-input-group__message').should('be.visible').and('contain.text', data.warningMessage);
-    //             })
-    //         })
-    // })
 
-    describe('Create Login Details)', () =>{
-        // it('Validate that all expected elements are axisting', () =>{
-        //     cy.get('[class="oxd-switch-wrapper"]').click();
-        //     cy.contains('label', 'Username').parents('.oxd-input-group').find('input').should('be.visible');
-        //     cy.get('input[type="radio"][value="1"]').should('be.checked');
-        //     cy.get('input[type="radio"][value="2"]').should('not.be.checked');
-        //     cy.contains('label', 'Password').parents('.oxd-input-group').find('input').should('be.visible');
-        //     cy.contains('label', 'Confirm Password').parents('.oxd-input-group').find('input').should('be.visible');
-        // })
+        it('Create Login Details checkbox is not checked', () => {
+            addEmployeePage.loginDetailsCheckbox()
+                .should('not.be.checked')
+        })
+    })
 
-        // it('Create an employee', () =>{ 
-        //     const data = employeeData.createLoginDetails;
-        //     cy.get('[name="firstName"]').type(data.firstName);
-        //     cy.get('[name="lastName"]').type(data.lastName);
-        //     cy.get('[class="oxd-switch-wrapper"]').click();
-        //     cy.contains('label', 'Username').parents('.oxd-input-group').find('input').type(data.username);
-        //     cy.contains('label', 'Password').parents('.oxd-input-group').find('input').type(data.password);
-        //     cy.contains('label', 'Confirm Password').parents('.oxd-input-group').find('input').type(data.confirmPassword);
-        //     cy.contains('label', 'Employee Id').parents('.oxd-input-group').find('input').invoke('val').as('employeeId')
-        //     cy.get('[type="submit"]').click();
-        //     cy.get('.orangehrm-main-title').should('be.visible').and('contain.text', 'Personal Details')
-        //     cy.contains('.oxd-topbar-body-nav-tab-item', 'Employee List').click();
-        //     cy.get('@employeeId').then((employeeId) => {
-        //     cy.get('.oxd-padding-cell').should('contain.text', employeeId)
-        //     })
-        // })
-        employeeData.createLoginDetailsWithMissingRequiredFields.forEach((data) =>{       
-            it(`Create employee without ${data.fieldName}`, () => {
-                cy.get('[name="firstName"]').type(data.firstName);
-                cy.get('[name="lastName"]').type(data.lastName);
-                cy.get('[class="oxd-switch-wrapper"]').click();    
 
-                if(data.username !== ''){
-                    cy.contains('label', 'Username').parents('.oxd-input-group').find('input').type(data.username);
-                }
-                if(data.password !== ''){
-                    cy.contains('label', 'Password').parents('.oxd-input-group').find('input').type(data.password);
-                }
-                if(data.confirmPassword !== ''){
-                    cy.contains('label', 'Confirm Password').parents('.oxd-input-group').find('input').type(data.confirmPassword);
-                }   
-            cy.get('[type="submit"]').click();
-            cy.get('.oxd-input-group__message').should('be.visible').and('contain.text', data.warningMessage);
+    describe('Create an employee', () => {
 
+        it('Create an employee with required fields', () => {
+            const data = employeeData.requiredFieldsOnly
+
+            addEmployeePage.fillEmployee(data)
+            addEmployeePage.saveEmployeeId()
+            addEmployeePage.submit()
+            addEmployeePage.assertPersonalDetailsLoaded()
+
+            addEmployeePage.employeeListTab().click()
+
+            cy.get('@employeeId').then((employeeId) => {
+                addEmployeePage.assertEmployeeInList(employeeId)
             })
         })
 
 
+        it('Create employee with all fields', () => {
+            const data = employeeData.allFields
+            const employeeId = String(Math.floor(Math.random() * 900000) + 100000)
+
+            addEmployeePage.fillEmployee(data)
+            addEmployeePage.setEmployeeId(employeeId)
+            addEmployeePage.submit()
+            addEmployeePage.assertPersonalDetailsLoaded()
+
+            addEmployeePage.employeeListTab().click()
+            addEmployeePage.assertEmployeeInList(employeeId)
+        })
+
+
+        it('Create an employee with a picture', () => {
+            const data = employeeData.employeeWithPhoto
+
+            addEmployeePage.fillEmployee(data)
+            addEmployeePage.uploadPhoto('cypress/fixtures/employeePhoto.jpg')
+            addEmployeePage.saveEmployeeId()
+            addEmployeePage.submit()
+            addEmployeePage.assertPersonalDetailsLoaded()
+
+            addEmployeePage.employeeListTab().click()
+
+            cy.get('@employeeId').then((employeeId) => {
+                addEmployeePage.assertEmployeeInList(employeeId)
+            })
+        })
+    })
+
+
+    describe('Create an employee - Negative Scenarios', () => {
+
+        employeeData.withoutRequiredFields.forEach((data) => {
+
+            it(`Create an employee without ${data.missingField}`, () => {
+                addEmployeePage.fillEmployee(data)
+                addEmployeePage.submit()
+                addEmployeePage.assertValidationMessage('Required')
+            })
+        })
+
+
+        it('Create an employee with duplicate ID', () => {
+            const data = employeeData.duplicatedId
+            const employeeId = String(Math.floor(Math.random() * 900000) + 100000)
+
+            addEmployeePage.fillEmployee(data)
+            addEmployeePage.setEmployeeId(employeeId)
+            addEmployeePage.submit()
+            addEmployeePage.assertPersonalDetailsLoaded()
+
+            // Direct visit is kept because the SPA transition was unstable in this scenario.
+            addEmployeePage.visit()
+            addEmployeePage.firstNameInput().should('be.visible')
+
+            addEmployeePage.fillEmployee(data)
+            addEmployeePage.setEmployeeId(employeeId)
+            addEmployeePage.submit()
+
+            addEmployeePage.assertValidationMessage('Employee Id already exists')
+        })
+
+
+        employeeData.fieldsOverMaximumLength.forEach((data) => {
+
+            it(`Create an employee with invalid length in ${data.testName}`, () => {
+                addEmployeePage.fillEmployee(data)
+
+                if (data.employeeId !== undefined && data.employeeId !== '') {
+                    addEmployeePage.setEmployeeId(data.employeeId)
+                }
+
+                addEmployeePage.submit()
+                addEmployeePage.assertValidationMessage(data.warningMessage)
+            })
+        })
+    })
+
+
+    describe('Create Login Details', () => {
+
+        it('Validate that all expected elements are visible', () => {
+            addEmployeePage.enableLoginDetails()
+
+            addEmployeePage.usernameInput().should('be.visible')
+            addEmployeePage.enabledStatusRadio().should('be.checked')
+            addEmployeePage.disabledStatusRadio().should('not.be.checked')
+            addEmployeePage.passwordInput().should('be.visible')
+            addEmployeePage.confirmPasswordInput().should('be.visible')
+        })
+
+
+        it('Create an employee with login details', () => {
+            const data = employeeData.createLoginDetails
+
+            addEmployeePage.fillEmployee(data)
+            addEmployeePage.enableLoginDetails()
+            addEmployeePage.fillLoginDetails(data)
+            addEmployeePage.saveEmployeeId()
+            addEmployeePage.submit()
+            addEmployeePage.assertPersonalDetailsLoaded()
+
+            addEmployeePage.employeeListTab().click()
+
+            cy.get('@employeeId').then((employeeId) => {
+                addEmployeePage.assertEmployeeInList(employeeId)
+            })
+        })
+
+
+        describe('Required Fields Validation', () => {
+
+            employeeData.createLoginDetailsWithMissingRequiredFields.forEach((data) => {
+
+                it(`Create employee without ${data.fieldName}`, () => {
+                    addEmployeePage.fillEmployee(data)
+                    addEmployeePage.enableLoginDetails()
+                    addEmployeePage.fillLoginDetails(data)
+                    addEmployeePage.submit()
+
+                    addEmployeePage.assertValidationMessage(data.warningMessage)
+                })
+            })
+        })
+
+
+        describe('Username Validation', () => {
+
+            employeeData.usernameWithOverMaxAndLessMinLength.forEach((data) => {
+
+                it(`Username length ${data.testName}`, () => {
+                    addEmployeePage.fillEmployee(data)
+                    addEmployeePage.enableLoginDetails()
+                    addEmployeePage.fillLoginDetails(data)
+                    addEmployeePage.submit()
+
+                    addEmployeePage.assertValidationMessage(data.warningMessage)
+                })
+            })
+
+
+            it('Duplicate username', () => {
+                const data = employeeData.duplicatedUsername
+                const username = `user${Date.now()}`
+
+                addEmployeePage.fillEmployee(data)
+                addEmployeePage.enableLoginDetails()
+
+                addEmployeePage.fillLoginDetails({
+                    username: username,
+                    password: data.password,
+                    confirmPassword: data.confirmPassword
+                })
+
+                addEmployeePage.saveEmployeeId()
+                addEmployeePage.submit()
+                addEmployeePage.assertPersonalDetailsLoaded()
+
+                addEmployeePage.employeeListTab().click()
+
+                cy.get('@employeeId').then((employeeId) => {
+                    addEmployeePage.assertEmployeeInList(employeeId)
+                })
+
+                addEmployeePage.addEmployeeTab().click()
+
+                addEmployeePage.fillEmployee(data)
+                addEmployeePage.enableLoginDetails()
+
+                addEmployeePage.fillLoginDetails({
+                    username: username,
+                    password: data.password,
+                    confirmPassword: data.confirmPassword
+                })
+
+                addEmployeePage.submit()
+                addEmployeePage.assertValidationMessage(data.warningMessage)
+            })
+        })
+
+
+        describe('Password Validation', () => {
+
+            employeeData.passwordValidation.forEach((data) => {
+
+                it(`${data.testName}`, () => {
+                    addEmployeePage.fillEmployee(data)
+                    addEmployeePage.enableLoginDetails()
+                    addEmployeePage.fillLoginDetails(data)
+                    addEmployeePage.submit()
+
+                    addEmployeePage.assertValidationMessage(data.warningMessage)
+                })
+            })
+        })
+
+
+        describe('Confirm Password', () => {
+
+            it('Confirm Password mismatch', () => {
+                const data = employeeData.confirmPassword
+
+                addEmployeePage.fillEmployee(data)
+                addEmployeePage.enableLoginDetails()
+                addEmployeePage.fillLoginDetails(data)
+                addEmployeePage.submit()
+
+                addEmployeePage.assertValidationMessage(data.warningMessage)
+            })
+        })
     })
 })

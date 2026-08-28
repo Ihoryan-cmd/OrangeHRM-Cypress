@@ -1,86 +1,122 @@
 /// <reference types="cypress" />
+
 import loginData from '../fixtures/loginData.json'
+import LoginPage from '../support/Pages/LoginPage'
+import SharedLayoutPage from '../support/Pages/SharedLayoutPage'
+
 describe('Login Page', () => {
 
     beforeEach(() => {
         cy.visit('/')
-        cy.get('[alt="orangehrm-logo"]')
-        .should('be.visible')
+
+        LoginPage.orangeHrmLogo()
+            .should('be.visible')
     })
 
-        it('Main LoginPage elements are visible', () =>{
-            cy.get('[name="username"]').should('be.visible')
-            cy.get('[name="password"]').should('be.visible')
-            cy.get('[type="submit"]').should('be.visible')
-            cy.get('.orangehrm-login-forgot-header').should('be.visible').and('contain.text', 'Forgot your password?')
-        })
 
-        it('Input fields should be empty', () =>{
-            cy.get('[name="username"]').should('have.value', '')
-            cy.get('[name="password"]').should('have.value', '')
-        })
+    it('Main Login Page elements are visible', () => {
+        LoginPage.usernameInput().should('be.visible')
+        LoginPage.passwordInput().should('be.visible')
+        LoginPage.loginButton().should('be.visible')
 
-        it('Password field has type: "password"', () =>{
-            cy.get('[name="password"]').should('have.attr', 'type', 'password')
-        })
+        LoginPage.forgotPasswordButton()
+            .should('be.visible')
+            .and('contain.text', 'Forgot your password?')
+    })
 
 
-        it('logs in with valid credentials', () => {
-        cy.env(['username', 'password']).then(({username, password}) => {
-            cy.login(username, password)
-        })
-        cy.url().should('include', '/dashboard')
-        cy.get('.oxd-topbar-header-breadcrumb-module').should('be.visible').and('contain.text', 'Dashboard')
-        })
-   
-   loginData.invalidCredentials.forEach((data) => {
+    it('Input fields should be empty', () => {
+        LoginPage.usernameInput().should('have.value', '')
+        LoginPage.passwordInput().should('have.value', '')
+    })
 
 
-    it(`shows error for ${data.testName}`, () => {
+    it('Password field has type "password"', () => {
+        LoginPage.passwordInput()
+            .should('have.attr', 'type', 'password')
+    })
+
+
+    it('Logs in with valid credentials', () => {
 
         cy.env(['username', 'password']).then(({ username, password }) => {
-
-            const loginUsername =
-                data.field === 'username' ? data.invalidValue : username
-
-            const loginPassword =
-                data.field === 'password' ? data.invalidValue : password
-
-            cy.login(loginUsername, loginPassword)
+            LoginPage.login(username, password)
         })
 
-        cy.contains('Invalid credentials').should('be.visible')
+        cy.url().should('include', '/dashboard')
+
+        SharedLayoutPage.pageTitle()
+            .should('be.visible')
+            .and('contain.text', 'Dashboard')
     })
+
+
+    loginData.invalidCredentials.forEach((data) => {
+
+        it(`Shows error for ${data.testName}`, () => {
+
+            cy.env(['username', 'password']).then(({ username, password }) => {
+
+                const loginUsername =
+                    data.field === 'username' ? data.invalidValue : username
+
+                const loginPassword =
+                    data.field === 'password' ? data.invalidValue : password
+
+                LoginPage.login(loginUsername, loginPassword)
+            })
+
+            LoginPage.invalidCredentialsMessage()
+                .should('be.visible')
+                .and('contain.text', 'Invalid credentials')
+        })
     })
+
 
     loginData.emptyCredentials.forEach((data) => {
-    it('shows error for ${data.testName}', () => {
-        cy.env(['username', 'password']).then(({ username, password }) => {
 
-            if(data.field !== 'username') {
-                cy.get('[name = "username"]').type(username)
-            }
-            if(data.field !== 'password') {
-                cy.get('[name = "password"]').type(password)
-            }
+        it(`Shows error for ${data.testName}`, () => {
 
-            cy.get('button[type = "submit"]').click()
+            cy.env(['username', 'password']).then(({ username, password }) => {
+
+                if (data.field !== 'username') {
+                    LoginPage.usernameInput().type(username)
+                }
+
+                if (data.field !== 'password') {
+                    LoginPage.passwordInput().type(password)
+                }
+
+                LoginPage.loginButton().click()
+            })
+
+            LoginPage.requiredFieldMessage(data.field)
+                .should('have.text', 'Required')
         })
-        cy.get(`[name="${data.field}"]`)
-            .parents('.oxd-input-group')
-            .find('.oxd-input-field-error-message')
-            .should('have.text', 'Required')
     })
+
+
+    it('Forgot Password link navigates to Reset Password page', () => {
+
+        LoginPage.forgotPasswordButton().click()
+
+        LoginPage.resetPasswordTitle()
+            .should('be.visible')
+            .and('contain.text', 'Reset Password')
     })
-    it('Forgot Password link navigates to Reset Password page', () =>{
-        cy.get('.orangehrm-login-forgot-header').click()
-        cy.get('.orangehrm-forgot-password-title').should('be.visible').and('contain.text', 'Reset Password')
-    })
+
+
     it('Back to Login link navigates back to Login page', () => {
-        cy.get('.orangehrm-login-forgot-header').click()
-        cy.get('.orangehrm-forgot-password-title').should('be.visible').and('contain.text', 'Reset Password')
-        cy.get('.orangehrm-forgot-password-reset--link').click()
-        cy.get('[alt="orangehrm-logo"]')
-        .should('be.visible')
+
+        LoginPage.forgotPasswordButton().click()
+
+        LoginPage.resetPasswordTitle()
+            .should('be.visible')
+            .and('contain.text', 'Reset Password')
+
+        LoginPage.backToLoginButton().click()
+
+        LoginPage.orangeHrmLogo()
+            .should('be.visible')
     })
 })

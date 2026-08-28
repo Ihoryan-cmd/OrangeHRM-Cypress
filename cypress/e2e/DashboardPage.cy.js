@@ -1,31 +1,58 @@
-describe('dashboardPage', () =>{
+import LoginPage from '../support/Pages/LoginPage'
+import DashboardPage from '../support/Pages/DashboardPage'
+import SharedLayoutPage from '../support/Pages/SharedLayoutPage'
+
+describe('Dashboard Page', () => {
 
     beforeEach(() => {
         cy.visit('/')
-        cy.get('[alt="orangehrm-logo"]')
-        .should('be.visible')
-         cy.env(['username', 'password']).then(({username, password}) => {
-            cy.login(username, password)
+
+        LoginPage.logo()
+            .should('be.visible')
+
+        cy.env(['username', 'password']).then(({ username, password }) => {
+            LoginPage.login(username, password)
         })
     })
 
-    it('verify this really is Dashboard', () =>{
-        cy.get('.oxd-topbar-header-breadcrumb-module').should('be.visible').and('contain.text', 'Dashboard');
+
+    it('Verify this really is Dashboard', () => {
+
+        cy.url().should('include', '/dashboard')
+
+        SharedLayoutPage.pageTitle()
+            .should('be.visible')
+            .and('contain.text', 'Dashboard')
     })
 
-    it('verify all Dashboard widgets are visible', () =>{
-        cy.contains('.oxd-text--p', 'Time at Work').should('be.visible');
-        cy.contains('.oxd-text--p', 'My Actions').should('be.visible');
-        cy.contains('.oxd-text--p', 'Quick Launch').should('be.visible');
-        cy.contains('.oxd-text--p', 'Buzz Latest Posts').should('be.visible');
-        cy.contains('.oxd-text--p', 'Employees on Leave Today').should('be.visible');
-        cy.contains('.oxd-text--p', 'Employee Distribution by Sub Unit').should('be.visible');
-        cy.contains('.oxd-text--p', 'Employee Distribution by Location').should('be.visible');
+
+    it('Verify all Dashboard widgets are visible', () => {
+
+        const widgets = [
+            'Time at Work',
+            'My Actions',
+            'Quick Launch',
+            'Buzz Latest Posts',
+            'Employees on Leave Today',
+            'Employee Distribution by Sub Unit',
+            'Employee Distribution by Location'
+        ]
+
+        widgets.forEach((widget) => {
+            DashboardPage.widget(widget)
+                .should('be.visible')
+        })
     })
 
-    it('Time at Work button navigates to Attendance page', () =>{
-        cy.get('.orangehrm-attendance-card-action').click();
+
+    it('Time at Work button navigates to Attendance page', () => {
+
+        DashboardPage.openTimeAtWork()
+
         cy.url().should('include', '/attendance')
-        cy.get('.oxd-topbar-header-breadcrumb-module').should('be.visible').and('contain.text', 'Attendance');
+
+        SharedLayoutPage.pageTitle()
+            .should('be.visible')
+            .and('contain.text', 'Attendance')
     })
 })

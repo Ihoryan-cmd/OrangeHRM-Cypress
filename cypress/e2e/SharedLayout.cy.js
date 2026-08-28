@@ -1,205 +1,238 @@
-describe('sharedLayout', () =>{
+import LoginPage from '../support/Pages/LoginPage'
+import SharedLayoutPage from '../support/Pages/SharedLayoutPage'
+
+describe('Shared Layout', () => {
+
     beforeEach(() => {
         cy.visit('/')
-        cy.get('[alt="orangehrm-logo"]')
-        .should('be.visible')
-        cy.env(['username', 'password']).then(({username, password}) => {
+
+        LoginPage.orangeHrmLogo()
+            .should('be.visible')
+
+        cy.env(['username', 'password']).then(({ username, password }) => {
             cy.login(username, password)
         })
     })
+
+
     describe('Shared Elements', () => {
-        it('Shared layout elements are visible', () =>{
-            cy.get('[alt="client brand banner"]').should('be.visible');
-            cy.get('[placeholder="Search"]').should('be.visible');
-            cy.contains('.oxd-main-menu-item--name', 'Admin').should('be.visible');
-            cy.contains('.oxd-main-menu-item--name', 'PIM').should('be.visible');
-            cy.contains('.oxd-main-menu-item--name', 'Leave').should('be.visible');
-            cy.contains('.oxd-main-menu-item--name', 'Time').should('be.visible');
-            cy.contains('.oxd-main-menu-item--name', 'Recruitment').should('be.visible');
-            cy.contains('.oxd-main-menu-item--name', 'My Info').should('be.visible');
-            cy.contains('.oxd-main-menu-item--name', 'Performance').should('be.visible');
-            cy.contains('.oxd-main-menu-item--name', 'Dashboard').should('be.visible');
-            cy.contains('.oxd-main-menu-item--name', 'Directory').should('be.visible');
-            cy.contains('.oxd-main-menu-item--name', 'Maintenance').should('be.visible');
-            cy.contains('.oxd-main-menu-item--name', 'Claim').should('be.visible');
-            cy.contains('.oxd-main-menu-item--name', 'Buzz').should('be.visible');
-            cy.get('.bi-chevron-left').should('be.visible');
-            cy.get('.orangehrm-upgrade-button').should('be.visible');
-            cy.get('.oxd-userdropdown-name').should('be.visible');
+
+        it('Shared layout elements are visible', () => {
+
+            SharedLayoutPage.clientBrandBanner().should('be.visible')
+            SharedLayoutPage.searchInput().should('be.visible')
+
+            const menuItems = [
+                'Admin',
+                'PIM',
+                'Leave',
+                'Time',
+                'Recruitment',
+                'My Info',
+                'Performance',
+                'Dashboard',
+                'Directory',
+                'Maintenance',
+                'Claim',
+                'Buzz'
+            ]
+
+            menuItems.forEach((item) => {
+                SharedLayoutPage.menuItem(item)
+                    .should('be.visible')
+            })
+
+            SharedLayoutPage.collapseButton().should('be.visible')
+            SharedLayoutPage.upgradeButton().should('be.visible')
+            SharedLayoutPage.profileButton().should('be.visible')
         })
     })
+
 
     describe('Sidebar Navigation', () => {
 
-    it('Admin link navigates to Admin page', () => {
-        cy.contains('.oxd-main-menu-item--name', 'Admin').click()
+        const navigationPages = [
+            {
+                name: 'Admin',
+                url: '/admin',
+                title: 'Admin'
+            },
+            {
+                name: 'PIM',
+                url: '/pim',
+                title: 'PIM'
+            },
+            {
+                name: 'Leave',
+                url: '/leave',
+                title: 'Leave'
+            },
+            {
+                name: 'Time',
+                url: '/time',
+                title: 'Time'
+            },
+            {
+                name: 'Recruitment',
+                url: '/recruitment',
+                title: 'Recruitment'
+            },
+            {
+                name: 'Performance',
+                url: '/performance',
+                title: 'Performance'
+            },
+            {
+                name: 'Dashboard',
+                url: '/dashboard',
+                title: 'Dashboard'
+            },
+            {
+                name: 'Directory',
+                url: '/directory',
+                title: 'Directory'
+            },
+            {
+                name: 'Claim',
+                url: '/claim',
+                title: 'Claim'
+            },
+            {
+                name: 'Buzz',
+                url: '/buzz',
+                title: 'Buzz'
+            }
+        ]
 
-        cy.url().should('include', '/admin')
 
-        cy.get('.oxd-topbar-header-breadcrumb-module')
-            .should('be.visible')
-            .and('contain.text', 'Admin')
+        navigationPages.forEach((page) => {
+
+            it(`${page.name} link navigates to ${page.name} page`, () => {
+
+                SharedLayoutPage.openMenuItem(page.name)
+
+                cy.url().should('include', page.url)
+
+                SharedLayoutPage.pageTitle()
+                    .should('be.visible')
+                    .and('contain.text', page.title)
+            })
+        })
+
+
+        it('My Info link navigates to My Info page', () => {
+
+            SharedLayoutPage.openMenuItem('My Info')
+
+            cy.url().should('include', '/pim')
+
+            SharedLayoutPage.pageTitle()
+                .should('be.visible')
+        })
+
+
+        it('Maintenance link navigates to Maintenance page', () => {
+
+            SharedLayoutPage.openMenuItem('Maintenance')
+
+            cy.url().should('include', '/maintenance')
+
+            SharedLayoutPage.maintenanceAccessTitle()
+                .should('be.visible')
+                .and('contain.text', 'Administrator Access')
+        })
+
+
+        it('Search field is working properly', () => {
+
+            SharedLayoutPage.searchMenu('Admin')
+
+            SharedLayoutPage.menuItem('Admin')
+                .should('be.visible')
+
+            SharedLayoutPage.menuItem('PIM')
+                .should('not.exist')
+        })
+
+
+        it('Sidebar can be collapsed and expanded', () => {
+
+            SharedLayoutPage.collapseSidebar()
+
+            SharedLayoutPage.expandButton()
+                .should('be.visible')
+
+            SharedLayoutPage.expandSidebar()
+
+            SharedLayoutPage.collapseButton()
+                .should('be.visible')
+        })
     })
 
-    it('PIM link navigates to PIM page', () => {
-        cy.contains('.oxd-main-menu-item--name', 'PIM').click()
 
-        cy.url().should('include', '/pim')
-
-        cy.get('.oxd-topbar-header-breadcrumb-module')
-            .should('be.visible')
-            .and('contain.text', 'PIM')
-    })
-
-    it('Leave link navigates to Leave page', () => {
-        cy.contains('.oxd-main-menu-item--name', 'Leave').click()
-
-        cy.url().should('include', '/leave')
-
-        cy.get('.oxd-topbar-header-breadcrumb-module')
-            .should('be.visible')
-            .and('contain.text', 'Leave')
-    })
-
-    it('Time link navigates to Time page', () => {
-        cy.contains('.oxd-main-menu-item--name', 'Time').click()
-
-        cy.url().should('include', '/time')
-
-        cy.get('.oxd-topbar-header-breadcrumb-module')
-            .should('be.visible')
-            .and('contain.text', 'Time')
-    })
-
-    it('Recruitment link navigates to Recruitment page', () => {
-        cy.contains('.oxd-main-menu-item--name', 'Recruitment').click()
-
-        cy.url().should('include', '/recruitment')
-
-        cy.get('.oxd-topbar-header-breadcrumb-module')
-            .should('be.visible')
-            .and('contain.text', 'Recruitment')
-    })
-
-    it('My Info link navigates to My Info page', () => {
-        cy.contains('.oxd-main-menu-item--name', 'My Info').click()
-
-        cy.url().should('include', '/pim')
-
-        cy.get('.oxd-topbar-header-breadcrumb-module')
-            .should('be.visible')
-    })
-
-    it('Performance link navigates to Performance page', () => {
-        cy.contains('.oxd-main-menu-item--name', 'Performance').click()
-
-        cy.url().should('include', '/performance')
-
-        cy.get('.oxd-topbar-header-breadcrumb-module')
-            .should('be.visible')
-            .and('contain.text', 'Performance')
-    })
-
-    it('Dashboard link navigates to Dashboard page', () => {
-        cy.contains('.oxd-main-menu-item--name', 'Dashboard').click()
-
-        cy.url().should('include', '/dashboard')
-
-        cy.get('.oxd-topbar-header-breadcrumb-module')
-            .should('be.visible')
-            .and('contain.text', 'Dashboard')
-    })
-
-    it('Directory link navigates to Directory page', () => {
-        cy.contains('.oxd-main-menu-item--name', 'Directory').click()
-
-        cy.url().should('include', '/directory')
-
-        cy.get('.oxd-topbar-header-breadcrumb-module')
-            .should('be.visible')
-            .and('contain.text', 'Directory')
-    })
-
-    it('Maintenance link navigates to Maintenance page', () => {
-        cy.contains('.oxd-main-menu-item--name', 'Maintenance').click()
-
-        cy.url().should('include', '/maintenance')
-
-        cy.get('.orangehrm-admin-access-title')
-            .should('be.visible')
-            .and('contain.text', 'Administrator Access')
-    })
-
-    it('Claim link navigates to Claim page', () => {
-        cy.contains('.oxd-main-menu-item--name', 'Claim').click()
-
-        cy.url().should('include', '/claim')
-
-        cy.get('.oxd-topbar-header-breadcrumb-module')
-            .should('be.visible')
-            .and('contain.text', 'Claim')
-    })
-
-    it('Buzz link navigates to Buzz page', () => {
-        cy.contains('.oxd-main-menu-item--name', 'Buzz').click()
-
-        cy.url().should('include', '/buzz')
-
-        cy.get('.oxd-topbar-header-breadcrumb-module')
-            .should('be.visible')
-            .and('contain.text', 'Buzz')
-    })
-    it('Search field is working properly', () =>{
-        cy.get('[placeholder="Search"]').type('Admin');
-        cy.contains('.oxd-main-menu-item--name', 'Admin').should('be.visible');
-
-        cy.contains('.oxd-main-menu-item--name', 'PIM').should('not.exist');
-    })
-
-    it('Sidebar can be collapsed and expanded', () =>{
-        cy.get('.bi-chevron-left').click()
-        cy.get('.bi-chevron-right').should('be.visible');
-        cy.get('.bi-chevron-right').click()
-        cy.get('.bi-chevron-left').should('be.visible');
-
-    })
-
-})
-    describe('Profile Menu', () =>{
+    describe('Profile Menu', () => {
 
         it('Profile menu displays all available options', () => {
-        cy.get('[class="oxd-userdropdown-name"]').click();
-        cy.get('[class="oxd-userdropdown-link"]').should('be.visible').and('contain.text', 'About');
-        cy.get('[class="oxd-userdropdown-link"]').should('be.visible').and('contain.text', 'Support');
-        cy.get('[class="oxd-userdropdown-link"]').should('be.visible').and('contain.text', 'Change Password');
-        cy.get('[class="oxd-userdropdown-link"]').should('be.visible').and('contain.text', 'Logout');
+
+            SharedLayoutPage.openProfileMenu()
+
+            SharedLayoutPage.profileOption('About')
+                .should('be.visible')
+
+            SharedLayoutPage.profileOption('Support')
+                .should('be.visible')
+
+            SharedLayoutPage.profileOption('Change Password')
+                .should('be.visible')
+
+            SharedLayoutPage.profileOption('Logout')
+                .should('be.visible')
         })
 
-        it('About button is opening correct page', () =>{
-            cy.get('[class="oxd-userdropdown-name"]').click();
-            cy.contains('.oxd-userdropdown-link', 'About').click();
-            cy.get('.orangehrm-main-title').should('be.visible').and('contain.text', 'About');
-            cy.get('.oxd-dialog-close-button-position').click();
+
+        it('About button opens correct dialog', () => {
+
+            SharedLayoutPage.openProfileMenu()
+            SharedLayoutPage.openProfileOption('About')
+
+            SharedLayoutPage.mainTitle()
+                .should('be.visible')
+                .and('contain.text', 'About')
+
+            SharedLayoutPage.aboutDialogCloseButton().click()
         })
+
 
         it('Support link opens Support page', () => {
-            cy.get('[class="oxd-userdropdown-name"]').click();
-            cy.contains('.oxd-userdropdown-link', 'Support').click();
-            cy.get('.orangehrm-main-title').should('be.visible').and('contain.text', 'Getting Started with OrangeHRM');
+
+            SharedLayoutPage.openProfileMenu()
+            SharedLayoutPage.openProfileOption('Support')
+
+            SharedLayoutPage.mainTitle()
+                .should('be.visible')
+                .and('contain.text', 'Getting Started with OrangeHRM')
         })
-        
+
+
         it('Change Password link opens Update Password page', () => {
-            cy.get('[class="oxd-userdropdown-name"]').click();
-            cy.contains('.oxd-userdropdown-link', 'Change Password').click();
-            cy.get('.orangehrm-main-title').should('be.visible').and('contain.text', 'Update Password');
+
+            SharedLayoutPage.openProfileMenu()
+            SharedLayoutPage.openProfileOption('Change Password')
+
+            SharedLayoutPage.mainTitle()
+                .should('be.visible')
+                .and('contain.text', 'Update Password')
         })
 
-         it('Logout button is working', () => {
-            cy.get('[class="oxd-userdropdown-name"]').click();
-            cy.contains('.oxd-userdropdown-link', 'Logout').click();
-            cy.get('.orangehrm-login-title').should('be.visible').and('contain.text', 'Login');
+
+        it('Logout button is working', () => {
+
+            SharedLayoutPage.openProfileMenu()
+            SharedLayoutPage.openProfileOption('Logout')
+
+            LoginPage.loginTitle()
+                .should('be.visible')
+                .and('contain.text', 'Login')
         })
-    })      
-    
+    })
 })
-
