@@ -11,6 +11,10 @@ class DashboardPage {
     openTimeAtWork() {
         this.timeAtWorkButton().click()
     }
+
+    dashboardTitle(){
+        return cy.get('.oxd-topbar-header-breadcrumb-module').should('contain.text', 'Dashboard');
+    }
 }
 
 export default new DashboardPage()
