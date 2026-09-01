@@ -1,55 +1,61 @@
-class EmployeeList{
+class EmployeeList {
 
-    employeeListButton(){
+    employeeListButton() {
         return cy.contains('.oxd-topbar-body-nav-tab-item', 'Employee List')
     }
 
-    employeeNameField(){
+    employeeNameField() {
         return cy.contains('label', 'Employee Name')
-        .parents('.oxd-input-group')
-        .find('input')
+            .parents('.oxd-input-group')
+            .find('input')
     }
-    employeeIdField(){
+
+    employeeIdField() {
         return cy.contains('label', 'Employee Id')
-        .parents('.oxd-input-group')
-        .find('input')
+            .parents('.oxd-input-group')
+            .find('input')
     }
-    employmentStatusField(){
+
+    employmentStatusField() {
         return cy.contains('label', 'Employment Status')
-        .parents('.oxd-input-group')
-        .find('.oxd-select-text-input')
+            .parents('.oxd-input-group')
+            .find('.oxd-select-text')
     }
-    IncludeField(){
+
+    includeField() {
         return cy.contains('label', 'Include')
-        .parents('.oxd-input-group')
-        .find('.oxd-select-text-input')
+            .parents('.oxd-input-group')
+            .find('.oxd-select-text')
     }
-    SypervisorNameField(){
+
+    supervisorNameField() {
         return cy.contains('label', 'Supervisor Name')
-        .parents('.oxd-input-group')
-        .find('input')
+            .parents('.oxd-input-group')
+            .find('input')
     }
-    jobTitleField(){
+
+    jobTitleField() {
         return cy.contains('label', 'Job Title')
-        .parents('.oxd-input-group')
-        .find('.oxd-select-text-input')
+            .parents('.oxd-input-group')
+            .find('.oxd-select-text')
     }
-    subUnitField(){
+
+    subUnitField() {
         return cy.contains('label', 'Sub Unit')
-        .parents('.oxd-input-group')
-        .find('.oxd-select-text-input')
+            .parents('.oxd-input-group')
+            .find('.oxd-select-text')
     }
 
-    resetButton(){
-        return cy.contains('button', ' Reset ')
+    resetButton() {
+        return cy.contains('button', 'Reset')
     }
 
-    searchButton(){
-        return cy.contains('button', ' Search ')
+    searchButton() {
+        return cy.contains('button', 'Search')
     }
 
-    addButton(){
-        return cy.contains('button', ' Add ')
+    addButton() {
+        return cy.contains('button', 'Add')
     }
 
     recordsFound() {
@@ -60,33 +66,41 @@ class EmployeeList{
         return cy.get('.oxd-table-body .oxd-table-card')
     }
 
-    noRecordsFound(){
-        return cy.get('.oxd-text--span').should('contain.text', 'No Records Found');
+    noRecordsFound() {
+        return cy.contains('.oxd-text--span', 'No Records Found')
     }
 
-    idHeader(){
-        return cy.get('[role="columnheader"]').should('contain.text', 'id')
+    idHeader() {
+        return cy.contains('[role="columnheader"]', 'Id')
     }
-    firstNameHeader(){
-        return cy.get('[role="columnheader"]').should('contain.text', 'First (& Middle) Name')
+
+    firstNameHeader() {
+        return cy.contains('[role="columnheader"]', 'First (& Middle) Name')
     }
-    lastNameHeader(){
-        return cy.get('[role="columnheader"]').should('contain.text', 'Last Name')
+
+    lastNameHeader() {
+        return cy.contains('[role="columnheader"]', 'Last Name')
     }
-    jobTitleHeader(){
-        return cy.get('[role="columnheader"]').should('contain.text', 'Job Title')
+
+    jobTitleHeader() {
+        return cy.contains('[role="columnheader"]', 'Job Title')
     }
-    employmentStatusHeader(){
-        return cy.get('[role="columnheader"]').should('contain.text', 'Employment Status')
+
+    employmentStatusHeader() {
+        return cy.contains('[role="columnheader"]', 'Employment Status')
     }
-    subUnitHeader(){
-        return cy.get('[role="columnheader"]').should('contain.text', 'Sub Unit')
+
+    subUnitHeader() {
+        return cy.contains('[role="columnheader"]', 'Sub Unit')
     }
-    supervisorHeader(){
-        return cy.get('[role="columnheader"]').should('contain.text', 'Supervisor')
+
+    supervisorHeader() {
+        return cy.contains('[role="columnheader"]', 'Supervisor')
     }
-    actionsHeader(){
-        return cy.get('[role="columnheader"]').should('contain.text', 'Actions')
-    }    
+
+    actionsHeader() {
+        return cy.contains('[role="columnheader"]', 'Actions')
+    }
 }
+
 export default new EmployeeList()

@@ -40,10 +40,6 @@ class SharedLayoutPage {
         return cy.contains('.oxd-userdropdown-link', optionName)
     }
 
-    profileOptions() {
-        return cy.get('.oxd-userdropdown-link')
-    }
-
     aboutDialogCloseButton() {
         return cy.get('.oxd-dialog-close-button-position')
     }
@@ -51,7 +47,6 @@ class SharedLayoutPage {
     maintenanceAccessTitle() {
         return cy.get('.orangehrm-admin-access-title')
     }
-
 
     openMenuItem(name) {
         this.menuItem(name).click()

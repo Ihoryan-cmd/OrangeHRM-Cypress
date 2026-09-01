@@ -10,15 +10,15 @@
       "field": "password",
       "invalidValue": "WrongPassword"
     }
-
   ],
-
-    "emptyCredentials": [
+  "emptyCredentials": [
     {
+      "testName": "empty username",
       "field": "username"
     },
     {
+      "testName": "empty password",
       "field": "password"
-        }
-    ]
+    }
+  ]
 }

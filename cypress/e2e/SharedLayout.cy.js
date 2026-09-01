@@ -1,3 +1,5 @@
+/// <reference types="cypress" />
+
 import LoginPage from '../support/Pages/LoginPage'
 import SharedLayoutPage from '../support/Pages/SharedLayoutPage'
 
@@ -6,14 +8,15 @@ describe('Shared Layout', () => {
     beforeEach(() => {
         cy.visit('/')
 
-        LoginPage.orangeHrmLogo()
+        LoginPage.logo()
             .should('be.visible')
 
         cy.env(['username', 'password']).then(({ username, password }) => {
             cy.login(username, password)
         })
-    })
 
+        cy.url().should('include', '/dashboard')
+    })
 
     describe('Shared Elements', () => {
 
@@ -47,7 +50,6 @@ describe('Shared Layout', () => {
             SharedLayoutPage.profileButton().should('be.visible')
         })
     })
-
 
     describe('Sidebar Navigation', () => {
 
@@ -104,7 +106,6 @@ describe('Shared Layout', () => {
             }
         ]
 
-
         navigationPages.forEach((page) => {
 
             it(`${page.name} link navigates to ${page.name} page`, () => {
@@ -119,7 +120,6 @@ describe('Shared Layout', () => {
             })
         })
 
-
         it('My Info link navigates to My Info page', () => {
 
             SharedLayoutPage.openMenuItem('My Info')
@@ -129,7 +129,6 @@ describe('Shared Layout', () => {
             SharedLayoutPage.pageTitle()
                 .should('be.visible')
         })
-
 
         it('Maintenance link navigates to Maintenance page', () => {
 
@@ -142,8 +141,7 @@ describe('Shared Layout', () => {
                 .and('contain.text', 'Administrator Access')
         })
 
-
-        it('Search field is working properly', () => {
+        it('Search field filters sidebar menu items', () => {
 
             SharedLayoutPage.searchMenu('Admin')
 
@@ -153,7 +151,6 @@ describe('Shared Layout', () => {
             SharedLayoutPage.menuItem('PIM')
                 .should('not.exist')
         })
-
 
         it('Sidebar can be collapsed and expanded', () => {
 
@@ -168,7 +165,6 @@ describe('Shared Layout', () => {
                 .should('be.visible')
         })
     })
-
 
     describe('Profile Menu', () => {
 
@@ -189,7 +185,6 @@ describe('Shared Layout', () => {
                 .should('be.visible')
         })
 
-
         it('About button opens correct dialog', () => {
 
             SharedLayoutPage.openProfileMenu()
@@ -202,7 +197,6 @@ describe('Shared Layout', () => {
             SharedLayoutPage.aboutDialogCloseButton().click()
         })
 
-
         it('Support link opens Support page', () => {
 
             SharedLayoutPage.openProfileMenu()
@@ -212,7 +206,6 @@ describe('Shared Layout', () => {
                 .should('be.visible')
                 .and('contain.text', 'Getting Started with OrangeHRM')
         })
-
 
         it('Change Password link opens Update Password page', () => {
 
@@ -224,8 +217,7 @@ describe('Shared Layout', () => {
                 .and('contain.text', 'Update Password')
         })
 
-
-        it('Logout button is working', () => {
+        it('Logout button logs the user out', () => {
 
             SharedLayoutPage.openProfileMenu()
             SharedLayoutPage.openProfileOption('Logout')

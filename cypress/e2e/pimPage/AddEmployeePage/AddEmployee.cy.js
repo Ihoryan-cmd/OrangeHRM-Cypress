@@ -1,19 +1,30 @@
+/// <reference types="cypress" />
+
 import employeeData from '../../../fixtures/employeeData.json'
-import addEmployeePage from '../../../support/pages/AddEmployeePage'
+import LoginPage from '../../../support/Pages/LoginPage'
+import SharedLayoutPage from '../../../support/Pages/SharedLayoutPage'
+import AddEmployeePage from '../../../support/Pages/AddEmployeePage'
 
 describe('Add Employee', () => {
 
     beforeEach(() => {
         cy.visit('/')
 
-        cy.get('[alt="orangehrm-logo"]')
+        LoginPage.logo()
             .should('be.visible')
 
-        cy.env(['username', 'password']).then(({username, password}) => {
-            cy.login(username, password)
+        cy.env(['username', 'password']).then(({ username, password }) => {
+            LoginPage.login(username, password)
         })
 
-        addEmployeePage.openFromPimMenu()
+        cy.url().should('include', '/dashboard')
+
+        SharedLayoutPage.menuItem('PIM').click()
+        AddEmployeePage.addEmployeeTab().click()
+
+        AddEmployeePage.mainTitle()
+            .should('be.visible')
+            .and('contain.text', 'Add Employee')
     })
 
 
@@ -22,138 +33,213 @@ describe('Add Employee', () => {
         it('Add Employee page is loaded', () => {
             cy.url().should('include', '/addEmployee')
 
-            addEmployeePage.mainTitle()
+            AddEmployeePage.mainTitle()
                 .should('be.visible')
                 .and('contain.text', 'Add Employee')
         })
 
 
         it('All elements are visible', () => {
-            addEmployeePage.firstNameInput().should('be.visible')
-            addEmployeePage.middleNameInput().should('be.visible')
-            addEmployeePage.lastNameInput().should('be.visible')
-            addEmployeePage.employeeIdInput().should('be.visible')
-            addEmployeePage.loginDetailsToggle().should('be.visible')
-            addEmployeePage.profileImageButton().should('be.visible')
-            addEmployeePage.cancelButton().should('be.visible')
-            addEmployeePage.saveButton().should('be.visible')
+            AddEmployeePage.firstNameInput().should('be.visible')
+            AddEmployeePage.middleNameInput().should('be.visible')
+            AddEmployeePage.lastNameInput().should('be.visible')
+            AddEmployeePage.employeeIdInput().should('be.visible')
+            AddEmployeePage.loginDetailsToggle().should('be.visible')
+            AddEmployeePage.profileImageButton().should('be.visible')
+            AddEmployeePage.cancelButton().should('be.visible')
+            AddEmployeePage.saveButton().should('be.visible')
         })
 
 
         it('Employee ID is already generated', () => {
-            addEmployeePage.employeeIdInput()
+            AddEmployeePage.employeeIdInput()
                 .should('not.have.value', '')
         })
 
 
-        it('Fields that should be empty are empty', () => {
-            addEmployeePage.firstNameInput().should('have.value', '')
-            addEmployeePage.middleNameInput().should('have.value', '')
-            addEmployeePage.lastNameInput().should('have.value', '')
+        it('Employee name fields are empty', () => {
+            AddEmployeePage.firstNameInput().should('have.value', '')
+            AddEmployeePage.middleNameInput().should('have.value', '')
+            AddEmployeePage.lastNameInput().should('have.value', '')
         })
 
 
         it('Create Login Details checkbox is not checked', () => {
-            addEmployeePage.loginDetailsCheckbox()
+            AddEmployeePage.loginDetailsCheckbox()
                 .should('not.be.checked')
         })
     })
 
 
-    describe('Create an employee', () => {
+    describe('Create Employee', () => {
 
-        it('Create an employee with required fields', () => {
+        it('Creates an employee with required fields', () => {
             const data = employeeData.requiredFieldsOnly
 
-            addEmployeePage.fillEmployee(data)
-            addEmployeePage.saveEmployeeId()
-            addEmployeePage.submit()
-            addEmployeePage.assertPersonalDetailsLoaded()
+            AddEmployeePage.firstNameInput().type(data.firstName)
+            AddEmployeePage.lastNameInput().type(data.lastName)
 
-            addEmployeePage.employeeListTab().click()
+            AddEmployeePage.employeeIdInput()
+                .invoke('val')
+                .as('employeeId')
+
+            AddEmployeePage.saveButton().click()
+
+            AddEmployeePage.mainTitle()
+                .should('be.visible')
+                .and('contain.text', 'Personal Details')
+
+            AddEmployeePage.employeeListTab().click()
 
             cy.get('@employeeId').then((employeeId) => {
-                addEmployeePage.assertEmployeeInList(employeeId)
+                AddEmployeePage.tableCells()
+                    .should('contain.text', employeeId)
             })
         })
 
 
-        it('Create employee with all fields', () => {
+        it('Creates an employee with all fields', () => {
             const data = employeeData.allFields
             const employeeId = String(Math.floor(Math.random() * 900000) + 100000)
 
-            addEmployeePage.fillEmployee(data)
-            addEmployeePage.setEmployeeId(employeeId)
-            addEmployeePage.submit()
-            addEmployeePage.assertPersonalDetailsLoaded()
+            AddEmployeePage.firstNameInput().type(data.firstName)
+            AddEmployeePage.middleNameInput().type(data.middleName)
+            AddEmployeePage.lastNameInput().type(data.lastName)
 
-            addEmployeePage.employeeListTab().click()
-            addEmployeePage.assertEmployeeInList(employeeId)
+            AddEmployeePage.employeeIdInput()
+                .clear()
+                .type(employeeId)
+
+            AddEmployeePage.saveButton().click()
+
+            AddEmployeePage.mainTitle()
+                .should('be.visible')
+                .and('contain.text', 'Personal Details')
+
+            AddEmployeePage.employeeListTab().click()
+
+            AddEmployeePage.tableCells()
+                .should('contain.text', employeeId)
         })
 
 
-        it('Create an employee with a picture', () => {
+        it('Creates an employee with a picture', () => {
             const data = employeeData.employeeWithPhoto
 
-            addEmployeePage.fillEmployee(data)
-            addEmployeePage.uploadPhoto('cypress/fixtures/employeePhoto.jpg')
-            addEmployeePage.saveEmployeeId()
-            addEmployeePage.submit()
-            addEmployeePage.assertPersonalDetailsLoaded()
+            AddEmployeePage.firstNameInput().type(data.firstName)
+            AddEmployeePage.lastNameInput().type(data.lastName)
 
-            addEmployeePage.employeeListTab().click()
+            AddEmployeePage.fileInput()
+                .selectFile('cypress/fixtures/employeePhoto.jpg', { force: true })
+
+            AddEmployeePage.employeeIdInput()
+                .invoke('val')
+                .as('employeeId')
+
+            AddEmployeePage.saveButton().click()
+
+            AddEmployeePage.mainTitle()
+                .should('be.visible')
+                .and('contain.text', 'Personal Details')
+
+            AddEmployeePage.employeeListTab().click()
 
             cy.get('@employeeId').then((employeeId) => {
-                addEmployeePage.assertEmployeeInList(employeeId)
+                AddEmployeePage.tableCells()
+                    .should('contain.text', employeeId)
             })
         })
     })
 
 
-    describe('Create an employee - Negative Scenarios', () => {
+    describe('Employee Validation', () => {
 
         employeeData.withoutRequiredFields.forEach((data) => {
 
-            it(`Create an employee without ${data.missingField}`, () => {
-                addEmployeePage.fillEmployee(data)
-                addEmployeePage.submit()
-                addEmployeePage.assertValidationMessage('Required')
+            it(`Shows validation when ${data.missingField} is missing`, () => {
+
+                if (data.firstName !== '') {
+                    AddEmployeePage.firstNameInput().type(data.firstName)
+                }
+
+                if (data.lastName !== '') {
+                    AddEmployeePage.lastNameInput().type(data.lastName)
+                }
+
+                AddEmployeePage.saveButton().click()
+
+                AddEmployeePage.validationMessages()
+                    .should('be.visible')
+                    .and('contain.text', 'Required')
             })
         })
 
 
-        it('Create an employee with duplicate ID', () => {
+        it('Shows validation for duplicate Employee ID', () => {
             const data = employeeData.duplicatedId
             const employeeId = String(Math.floor(Math.random() * 900000) + 100000)
 
-            addEmployeePage.fillEmployee(data)
-            addEmployeePage.setEmployeeId(employeeId)
-            addEmployeePage.submit()
-            addEmployeePage.assertPersonalDetailsLoaded()
+            AddEmployeePage.firstNameInput().type(data.firstName)
+            AddEmployeePage.lastNameInput().type(data.lastName)
 
-            // Direct visit is kept because the SPA transition was unstable in this scenario.
-            addEmployeePage.visit()
-            addEmployeePage.firstNameInput().should('be.visible')
+            AddEmployeePage.employeeIdInput()
+                .clear()
+                .type(employeeId)
 
-            addEmployeePage.fillEmployee(data)
-            addEmployeePage.setEmployeeId(employeeId)
-            addEmployeePage.submit()
+            AddEmployeePage.saveButton().click()
 
-            addEmployeePage.assertValidationMessage('Employee Id already exists')
+            AddEmployeePage.mainTitle()
+                .should('be.visible')
+                .and('contain.text', 'Personal Details')
+
+            // Direct visit is used because the SPA transition is unstable here.
+            cy.visit('/web/index.php/pim/addEmployee')
+
+            AddEmployeePage.firstNameInput()
+                .should('be.visible')
+
+            AddEmployeePage.firstNameInput().type(data.firstName)
+            AddEmployeePage.lastNameInput().type(data.lastName)
+
+            AddEmployeePage.employeeIdInput()
+                .clear()
+                .type(employeeId)
+
+            AddEmployeePage.saveButton().click()
+
+            AddEmployeePage.validationMessages()
+                .should('be.visible')
+                .and('contain.text', 'Employee Id already exists')
         })
 
 
         employeeData.fieldsOverMaximumLength.forEach((data) => {
 
-            it(`Create an employee with invalid length in ${data.testName}`, () => {
-                addEmployeePage.fillEmployee(data)
+            it(`Shows validation for invalid ${data.testName} length`, () => {
 
-                if (data.employeeId !== undefined && data.employeeId !== '') {
-                    addEmployeePage.setEmployeeId(data.employeeId)
+                if (data.firstName) {
+                    AddEmployeePage.firstNameInput().type(data.firstName)
                 }
 
-                addEmployeePage.submit()
-                addEmployeePage.assertValidationMessage(data.warningMessage)
+                if (data.middleName) {
+                    AddEmployeePage.middleNameInput().type(data.middleName)
+                }
+
+                if (data.lastName) {
+                    AddEmployeePage.lastNameInput().type(data.lastName)
+                }
+
+                if (data.employeeId) {
+                    AddEmployeePage.employeeIdInput()
+                        .clear()
+                        .type(data.employeeId)
+                }
+
+                AddEmployeePage.saveButton().click()
+
+                AddEmployeePage.validationMessages()
+                    .should('be.visible')
+                    .and('contain.text', data.warningMessage)
             })
         })
     })
@@ -161,32 +247,35 @@ describe('Add Employee', () => {
 
     describe('Create Login Details', () => {
 
-        it('Validate that all expected elements are visible', () => {
-            addEmployeePage.enableLoginDetails()
+        it('Login Details fields are visible after enabling the option', () => {
+            AddEmployeePage.loginDetailsToggle().click()
 
-            addEmployeePage.usernameInput().should('be.visible')
-            addEmployeePage.enabledStatusRadio().should('be.checked')
-            addEmployeePage.disabledStatusRadio().should('not.be.checked')
-            addEmployeePage.passwordInput().should('be.visible')
-            addEmployeePage.confirmPasswordInput().should('be.visible')
+            AddEmployeePage.usernameInput().should('be.visible')
+            AddEmployeePage.enabledStatusRadio().should('be.checked')
+            AddEmployeePage.disabledStatusRadio().should('not.be.checked')
+            AddEmployeePage.passwordInput().should('be.visible')
+            AddEmployeePage.confirmPasswordInput().should('be.visible')
         })
 
 
-        it('Create an employee with login details', () => {
+        it('Creates an employee with login details', () => {
             const data = employeeData.createLoginDetails
+            const username = `user${Date.now()}`
 
-            addEmployeePage.fillEmployee(data)
-            addEmployeePage.enableLoginDetails()
-            addEmployeePage.fillLoginDetails(data)
-            addEmployeePage.saveEmployeeId()
-            addEmployeePage.submit()
-            addEmployeePage.assertPersonalDetailsLoaded()
+            AddEmployeePage.firstNameInput().type(data.firstName)
+            AddEmployeePage.lastNameInput().type(data.lastName)
 
-            addEmployeePage.employeeListTab().click()
+            AddEmployeePage.loginDetailsToggle().click()
 
-            cy.get('@employeeId').then((employeeId) => {
-                addEmployeePage.assertEmployeeInList(employeeId)
-            })
+            AddEmployeePage.usernameInput().type(username)
+            AddEmployeePage.passwordInput().type(data.password)
+            AddEmployeePage.confirmPasswordInput().type(data.confirmPassword)
+
+            AddEmployeePage.saveButton().click()
+
+            AddEmployeePage.mainTitle()
+                .should('be.visible')
+                .and('contain.text', 'Personal Details')
         })
 
 
@@ -194,13 +283,30 @@ describe('Add Employee', () => {
 
             employeeData.createLoginDetailsWithMissingRequiredFields.forEach((data) => {
 
-                it(`Create employee without ${data.fieldName}`, () => {
-                    addEmployeePage.fillEmployee(data)
-                    addEmployeePage.enableLoginDetails()
-                    addEmployeePage.fillLoginDetails(data)
-                    addEmployeePage.submit()
+                it(`Shows validation when ${data.fieldName} is missing`, () => {
 
-                    addEmployeePage.assertValidationMessage(data.warningMessage)
+                    AddEmployeePage.firstNameInput().type(data.firstName)
+                    AddEmployeePage.lastNameInput().type(data.lastName)
+
+                    AddEmployeePage.loginDetailsToggle().click()
+
+                    if (data.username) {
+                        AddEmployeePage.usernameInput().type(data.username)
+                    }
+
+                    if (data.password) {
+                        AddEmployeePage.passwordInput().type(data.password)
+                    }
+
+                    if (data.confirmPassword) {
+                        AddEmployeePage.confirmPasswordInput().type(data.confirmPassword)
+                    }
+
+                    AddEmployeePage.saveButton().click()
+
+                    AddEmployeePage.validationMessages()
+                        .should('be.visible')
+                        .and('contain.text', data.warningMessage)
                 })
             })
         })
@@ -211,52 +317,62 @@ describe('Add Employee', () => {
             employeeData.usernameWithOverMaxAndLessMinLength.forEach((data) => {
 
                 it(`Username length ${data.testName}`, () => {
-                    addEmployeePage.fillEmployee(data)
-                    addEmployeePage.enableLoginDetails()
-                    addEmployeePage.fillLoginDetails(data)
-                    addEmployeePage.submit()
 
-                    addEmployeePage.assertValidationMessage(data.warningMessage)
+                    AddEmployeePage.firstNameInput().type(data.firstName)
+                    AddEmployeePage.lastNameInput().type(data.lastName)
+
+                    AddEmployeePage.loginDetailsToggle().click()
+
+                    AddEmployeePage.usernameInput().type(data.username)
+                    AddEmployeePage.passwordInput().type(data.password)
+                    AddEmployeePage.confirmPasswordInput().type(data.confirmPassword)
+
+                    AddEmployeePage.saveButton().click()
+
+                    AddEmployeePage.validationMessages()
+                        .should('be.visible')
+                        .and('contain.text', data.warningMessage)
                 })
             })
 
 
-            it('Duplicate username', () => {
+            it('Shows validation for duplicate username', () => {
                 const data = employeeData.duplicatedUsername
                 const username = `user${Date.now()}`
 
-                addEmployeePage.fillEmployee(data)
-                addEmployeePage.enableLoginDetails()
+                AddEmployeePage.firstNameInput().type(data.firstName)
+                AddEmployeePage.lastNameInput().type(data.lastName)
 
-                addEmployeePage.fillLoginDetails({
-                    username: username,
-                    password: data.password,
-                    confirmPassword: data.confirmPassword
-                })
+                AddEmployeePage.loginDetailsToggle().click()
 
-                addEmployeePage.saveEmployeeId()
-                addEmployeePage.submit()
-                addEmployeePage.assertPersonalDetailsLoaded()
+                AddEmployeePage.usernameInput().type(username)
+                AddEmployeePage.passwordInput().type(data.password)
+                AddEmployeePage.confirmPasswordInput().type(data.confirmPassword)
 
-                addEmployeePage.employeeListTab().click()
+                AddEmployeePage.saveButton().click()
 
-                cy.get('@employeeId').then((employeeId) => {
-                    addEmployeePage.assertEmployeeInList(employeeId)
-                })
+                AddEmployeePage.mainTitle()
+                    .should('be.visible')
+                    .and('contain.text', 'Personal Details')
 
-                addEmployeePage.addEmployeeTab().click()
+                cy.visit('/web/index.php/pim/addEmployee')
 
-                addEmployeePage.fillEmployee(data)
-                addEmployeePage.enableLoginDetails()
+                cy.wait(100)
 
-                addEmployeePage.fillLoginDetails({
-                    username: username,
-                    password: data.password,
-                    confirmPassword: data.confirmPassword
-                })
+                AddEmployeePage.firstNameInput().type(data.firstName)
+                AddEmployeePage.lastNameInput().type(data.lastName)
 
-                addEmployeePage.submit()
-                addEmployeePage.assertValidationMessage(data.warningMessage)
+                AddEmployeePage.loginDetailsToggle().click()
+
+                AddEmployeePage.usernameInput().type(username)
+                AddEmployeePage.passwordInput().type(data.password)
+                AddEmployeePage.confirmPasswordInput().type(data.confirmPassword)
+
+                AddEmployeePage.saveButton().click()
+
+                AddEmployeePage.validationMessages()
+                    .should('be.visible')
+                    .and('contain.text', data.warningMessage)
             })
         })
 
@@ -265,13 +381,22 @@ describe('Add Employee', () => {
 
             employeeData.passwordValidation.forEach((data) => {
 
-                it(`${data.testName}`, () => {
-                    addEmployeePage.fillEmployee(data)
-                    addEmployeePage.enableLoginDetails()
-                    addEmployeePage.fillLoginDetails(data)
-                    addEmployeePage.submit()
+                it(data.testName, () => {
 
-                    addEmployeePage.assertValidationMessage(data.warningMessage)
+                    AddEmployeePage.firstNameInput().type(data.firstName)
+                    AddEmployeePage.lastNameInput().type(data.lastName)
+
+                    AddEmployeePage.loginDetailsToggle().click()
+
+                    AddEmployeePage.usernameInput().type(data.username)
+                    AddEmployeePage.passwordInput().type(data.password)
+                    AddEmployeePage.confirmPasswordInput().type(data.confirmPassword)
+
+                    AddEmployeePage.saveButton().click()
+
+                    AddEmployeePage.validationMessages()
+                        .should('be.visible')
+                        .and('contain.text', data.warningMessage)
                 })
             })
         })
@@ -279,15 +404,23 @@ describe('Add Employee', () => {
 
         describe('Confirm Password', () => {
 
-            it('Confirm Password mismatch', () => {
+            it('Shows validation when passwords do not match', () => {
                 const data = employeeData.confirmPassword
 
-                addEmployeePage.fillEmployee(data)
-                addEmployeePage.enableLoginDetails()
-                addEmployeePage.fillLoginDetails(data)
-                addEmployeePage.submit()
+                AddEmployeePage.firstNameInput().type(data.firstName)
+                AddEmployeePage.lastNameInput().type(data.lastName)
 
-                addEmployeePage.assertValidationMessage(data.warningMessage)
+                AddEmployeePage.loginDetailsToggle().click()
+
+                AddEmployeePage.usernameInput().type(data.username)
+                AddEmployeePage.passwordInput().type(data.password)
+                AddEmployeePage.confirmPasswordInput().type(data.confirmPassword)
+
+                AddEmployeePage.saveButton().click()
+
+                AddEmployeePage.validationMessages()
+                    .should('be.visible')
+                    .and('contain.text', data.warningMessage)
             })
         })
     })

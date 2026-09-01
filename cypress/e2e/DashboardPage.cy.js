@@ -1,3 +1,5 @@
+/// <reference types="cypress" />
+
 import LoginPage from '../support/Pages/LoginPage'
 import DashboardPage from '../support/Pages/DashboardPage'
 import SharedLayoutPage from '../support/Pages/SharedLayoutPage'
@@ -13,10 +15,6 @@ describe('Dashboard Page', () => {
         cy.env(['username', 'password']).then(({ username, password }) => {
             LoginPage.login(username, password)
         })
-    })
-
-
-    it('Verify this really is Dashboard', () => {
 
         cy.url().should('include', '/dashboard')
 
@@ -25,9 +23,13 @@ describe('Dashboard Page', () => {
             .and('contain.text', 'Dashboard')
     })
 
+    it('Dashboard page is loaded properly', () => {
+        DashboardPage.dashboardTitle()
+            .should('be.visible')
+            .and('contain.text', 'Dashboard')
+    })
 
-    it('Verify all Dashboard widgets are visible', () => {
-
+    it('All Dashboard widgets are visible', () => {
         const widgets = [
             'Time at Work',
             'My Actions',
@@ -44,9 +46,7 @@ describe('Dashboard Page', () => {
         })
     })
 
-
     it('Time at Work button navigates to Attendance page', () => {
-
         DashboardPage.openTimeAtWork()
 
         cy.url().should('include', '/attendance')

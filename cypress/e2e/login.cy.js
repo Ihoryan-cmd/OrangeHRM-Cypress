@@ -9,10 +9,9 @@ describe('Login Page', () => {
     beforeEach(() => {
         cy.visit('/')
 
-        LoginPage.orangeHrmLogo()
+        LoginPage.logo()
             .should('be.visible')
     })
-
 
     it('Main Login Page elements are visible', () => {
         LoginPage.usernameInput().should('be.visible')
@@ -24,21 +23,17 @@ describe('Login Page', () => {
             .and('contain.text', 'Forgot your password?')
     })
 
-
     it('Input fields should be empty', () => {
         LoginPage.usernameInput().should('have.value', '')
         LoginPage.passwordInput().should('have.value', '')
     })
-
 
     it('Password field has type "password"', () => {
         LoginPage.passwordInput()
             .should('have.attr', 'type', 'password')
     })
 
-
     it('Logs in with valid credentials', () => {
-
         cy.env(['username', 'password']).then(({ username, password }) => {
             LoginPage.login(username, password)
         })
@@ -50,18 +45,22 @@ describe('Login Page', () => {
             .and('contain.text', 'Dashboard')
     })
 
-
     loginData.invalidCredentials.forEach((data) => {
 
         it(`Shows error for ${data.testName}`, () => {
 
             cy.env(['username', 'password']).then(({ username, password }) => {
 
-                const loginUsername =
-                    data.field === 'username' ? data.invalidValue : username
+                let loginUsername = username
+                let loginPassword = password
 
-                const loginPassword =
-                    data.field === 'password' ? data.invalidValue : password
+                if (data.field === 'username') {
+                    loginUsername = data.invalidValue
+                }
+
+                if (data.field === 'password') {
+                    loginPassword = data.invalidValue
+                }
 
                 LoginPage.login(loginUsername, loginPassword)
             })
@@ -71,7 +70,6 @@ describe('Login Page', () => {
                 .and('contain.text', 'Invalid credentials')
         })
     })
-
 
     loginData.emptyCredentials.forEach((data) => {
 
@@ -95,9 +93,7 @@ describe('Login Page', () => {
         })
     })
 
-
     it('Forgot Password link navigates to Reset Password page', () => {
-
         LoginPage.forgotPasswordButton().click()
 
         LoginPage.resetPasswordTitle()
@@ -105,9 +101,7 @@ describe('Login Page', () => {
             .and('contain.text', 'Reset Password')
     })
 
-
     it('Back to Login link navigates back to Login page', () => {
-
         LoginPage.forgotPasswordButton().click()
 
         LoginPage.resetPasswordTitle()
@@ -116,7 +110,7 @@ describe('Login Page', () => {
 
         LoginPage.backToLoginButton().click()
 
-        LoginPage.orangeHrmLogo()
+        LoginPage.logo()
             .should('be.visible')
     })
 })

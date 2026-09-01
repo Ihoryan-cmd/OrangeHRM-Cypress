@@ -8,12 +8,12 @@ class DashboardPage {
         return cy.get('.orangehrm-attendance-card-action')
     }
 
-    openTimeAtWork() {
-        this.timeAtWorkButton().click()
+    dashboardTitle() {
+        return cy.get('.oxd-topbar-header-breadcrumb-module')
     }
 
-    dashboardTitle(){
-        return cy.get('.oxd-topbar-header-breadcrumb-module').should('contain.text', 'Dashboard');
+    openTimeAtWork() {
+        this.timeAtWorkButton().click()
     }
 }
 

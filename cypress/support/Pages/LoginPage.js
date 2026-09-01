@@ -38,15 +38,15 @@ class LoginPage {
         return cy.get('.orangehrm-forgot-password-reset--link')
     }
 
+    loginTitle() {
+        return cy.get('.orangehrm-login-title')
+    }
+
     login(username, password) {
         this.usernameInput().type(username)
         this.passwordInput().type(password)
         this.loginButton().click()
     }
-
-    loginTitle() {
-    return cy.get('.orangehrm-login-title')
-}
 }
 
 export default new LoginPage()

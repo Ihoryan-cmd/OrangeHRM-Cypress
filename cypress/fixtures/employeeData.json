@@ -1,204 +1,196 @@
 {
-    "requiredFieldsOnly": {
-            "firstName": "ihoryan",
-            "lastName": "tovtt"
-        },
+  "requiredFieldsOnly": {
+    "firstName": "John",
+    "lastName": "Tester"
+  },
 
-    "allFields": {
-            "firstName": "ihoryan",
-            "middleName": "Lol",
-            "lastName": "tovti",
-            "employeeId": "47732"
-        },
+  "allFields": {
+    "firstName": "Jane",
+    "middleName": "Marie",
+    "lastName": "Automation"
+  },
 
-    "employeeWithPhoto": {
-            "firstName": "ihoryans",
-            "lastName": "tovtiw",
-            "photo": "employeePhoto.JPG"
-        },
-    
-    "withoutRequiredFields": [
-        {
-            "missingField": "First Name",
-            "firstName": "",
-            "lastName":"tovtiw"
-        },
-        {
-            "missingField": "Last Name",
-            "firstName":"ihoryands",
-            "lastName": ""
-        }
-    ],
+  "employeeWithPhoto": {
+    "firstName": "Photo",
+    "lastName": "Tester"
+  },
 
-    "duplicatedId": 
+  "withoutRequiredFields": [
     {
-        "firstName": "ifogfgfdg",
-        "lastName":"tovtiw"
+      "missingField": "First Name",
+      "firstName": "",
+      "lastName": "Tester"
     },
-
-    "fieldsOverMaximumLength": [
-        {
-            "testName": "firstName",
-            "firstName": "qwertyuiop[]asdfghjkl;'zxcvbnm,",
-            "lastName": "tovtik",
-            "warningMessage": "Should not exceed 30 characters"
-        },
-        {
-            "testName": "middleName",
-            "firstName": "ihoruas",
-            "middleName": "qwertyuiop[]asdfghjkl;'zxcvbnm,",
-            "lastName": "tovfjdf",
-            "warningMessage": "Should not exceed 30 characters"
-        },
-        {
-            "testName": "lastName",
-            "firstName": "ihoryan",
-            "lastName": "qwertyuiop[]asdfghjkl;'zxcvbnm,",
-            "warningMessage": "Should not exceed 30 characters"
-        },
-        {
-            "testName": "employeeId",
-            "firstName": "ihoryan",
-            "lastName": "tovfjdfed",
-            "employeeId": "12345678910",
-            "warningMessage": "Should not exceed 10 characters"
-        }
-    ],
-
-    "createLoginDetails": {
-            "firstName": "ihoryan",
-            "lastName": "tovtt",
-            "username": "p545toplavok",
-            "password": "2003638=Ti",
-            "confirmPassword": "2003638=Ti"
-        },
-    
-    "createLoginDetailsWithMissingRequiredFields": [
-        {
-            "fieldName": "username",
-            "firstName": "ihoryan",
-            "lastName": "tovtt",
-            "username": "",
-            "password": "2003638=Ti",
-            "confirmPassword": "2003638=Ti",
-            "warningMessage": "Required"
-        },
-        {
-            "fieldName": "password",
-            "firstName": "ihoryuan",
-            "lastName": "tovtt",
-            "username": "poplavoks",
-            "password": "",
-            "confirmPassword": "2003638=Ti",
-            "warningMessage": "Required"
-        },
-        {
-            "fieldName": "username",
-            "firstName": "ihoryanwd",
-            "lastName": "tovtt",
-            "username": "poplavoks",
-            "password": "2003638=Ti",
-            "confirmPassword": "",
-            "warningMessage": "Passwords do not match"
-        }
-    ],
-
-    "usernameWithOverMaxAndLessMinLength":[
-        {   
-            "testName": " < 5",
-            "firstName": "ihoryanwd",
-            "lastName": "tovtt",
-            "username": "popl",
-            "password": "2003638=Ti",
-            "confirmPassword": "2003638=Ti",
-            "warningMessage": "Should be at least 5 characters"
-        },
-
-        {
-            "testName": " > 40",
-            "firstName": "ihoryanwd",
-            "lastName": "tovtt",
-            "username": "popldfdsfdsfrdsfdssdfdsfdsfdsfdsfdsfggluf",
-            "password": "2003638=Ti",
-            "confirmPassword": "2003638=Ti",
-            "warningMessage": "Should not exceed 40 characters"
-        }
-    ],
-
-    "duplicatedUsername":{
-            "firstName": "ihoryanwd",
-            "lastName": "tovtt",
-            "username": "poplavochek1",
-            "password": "2003638=Ti",
-            "confirmPassword": "2003638=Ti",
-            "warningMessage": "Username already exists"
-    },
-
-    "passwordValidation": [
-        {
-            "testName": "Password length is < 8",
-            "firstName": "ihoryanwd",
-            "lastName": "tovtt",
-            "username": "poplewwdfdsfdsf",
-            "password": "20036",
-            "confirmPassword": "20036",
-            "warningMessage": "Should have at least 8 characters"
-        },
-        {
-            "testName": "Password has no uppercase letter",
-            "firstName": "ihoryanwd",
-            "lastName": "tovtt",
-            "username": "poplwedfdsfdsf",
-            "password": "2003638=ti",
-            "confirmPassword": "2003638=ti",
-            "warningMessage": "Your password must contain minimum 1 upper-case letter"
-        },
-        {
-            "testName": "Password has no lowercase letter",
-            "firstName": "ihoryanwd",
-            "lastName": "tovtt",
-            "username": "popldffwdsfdsf",
-            "password": "2003638=TI",
-            "confirmPassword": "2003638=TI",
-            "warningMessage": "Your password must contain minimum 1 lower-case letter"
-        },
-        {
-            "testName": "Password has no number",
-            "firstName": "ihoryanwd",
-            "lastName": "tovtt",
-            "username": "poplddsfdsfdsf",
-            "password": "Ihoryannn",
-            "confirmPassword": "Ihoryannn",
-            "warningMessage": "Your password must contain minimum 1 number"
-        },
-        {
-            "testName": "Password has no special character",
-            "firstName": "ihoryanwd",
-            "lastName": "tovtt",
-            "username": "popldfdsfdsfdsf",
-            "password": "2003638Ti",
-            "confirmPassword": "2003638Ti",
-            "warningMessage": "Your password must contain minimum 1 special character"
-        },
-        {
-            "testName": "Password length is > 64",
-            "firstName": "ihoryanwd",
-            "lastName": "tovtt",
-            "username": "popldwerfdsfdsf",
-            "password": "2003638=Ti0.0.010201020102010201020102010201020102010201020102010",
-            "confirmPassword": "2003638=Ti0.0.010201020102010201020102010201020102010201020102010",
-            "warningMessage": "Should not exceed 64 characters"
-        }
-    ],
-
-    "confirmPassword": {
-           
-        "firstName": "ihoryanwd",
-        "lastName": "tovtt",
-        "username": "poplavok12qweqws",
-        "password": "2003638=Ti",
-        "confirmPassword": "2003638=Tii",
-        "warningMessage": "Passwords do not match"
+    {
+      "missingField": "Last Name",
+      "firstName": "John",
+      "lastName": ""
     }
-}
+  ],
 
+  "duplicatedId": {
+    "firstName": "Duplicate",
+    "lastName": "Employee"
+  },
+
+  "fieldsOverMaximumLength": [
+    {
+      "testName": "First Name",
+      "firstName": "ABCDEFGHIJKLMNOPQRSTUVWXYZABCDE",
+      "lastName": "Tester",
+      "warningMessage": "Should not exceed 30 characters"
+    },
+    {
+      "testName": "Middle Name",
+      "firstName": "John",
+      "middleName": "ABCDEFGHIJKLMNOPQRSTUVWXYZABCDE",
+      "lastName": "Tester",
+      "warningMessage": "Should not exceed 30 characters"
+    },
+    {
+      "testName": "Last Name",
+      "firstName": "John",
+      "lastName": "ABCDEFGHIJKLMNOPQRSTUVWXYZABCDE",
+      "warningMessage": "Should not exceed 30 characters"
+    },
+    {
+      "testName": "Employee ID",
+      "firstName": "John",
+      "lastName": "Tester",
+      "employeeId": "12345678901",
+      "warningMessage": "Should not exceed 10 characters"
+    }
+  ],
+
+  "createLoginDetails": {
+    "firstName": "Login",
+    "lastName": "Tester",
+    "password": "2003638=Ti",
+    "confirmPassword": "2003638=Ti"
+  },
+
+  "createLoginDetailsWithMissingRequiredFields": [
+    {
+      "fieldName": "Username",
+      "firstName": "John",
+      "lastName": "Tester",
+      "username": "",
+      "password": "Test123!",
+      "confirmPassword": "Test123!",
+      "warningMessage": "Required"
+    },
+    {
+      "fieldName": "Password",
+      "firstName": "John",
+      "lastName": "Tester",
+      "username": "validuser02",
+      "password": "",
+      "confirmPassword": "Test123!",
+      "warningMessage": "Required"
+    },
+    {
+      "fieldName": "Confirm Password",
+      "firstName": "John",
+      "lastName": "Tester",
+      "username": "validuser03",
+      "password": "Test123!",
+      "confirmPassword": "",
+      "warningMessage": "Passwords do not match"
+    }
+  ],
+
+  "usernameWithOverMaxAndLessMinLength": [
+    {
+      "testName": "< 5",
+      "firstName": "John",
+      "lastName": "Tester",
+      "username": "user",
+      "password": "Test123!",
+      "confirmPassword": "Test123!",
+      "warningMessage": "Should be at least 5 characters"
+    },
+    {
+      "testName": "> 40",
+      "firstName": "John",
+      "lastName": "Tester",
+      "username": "user12345678901234567890123456789012345678901",
+      "password": "Test123!",
+      "confirmPassword": "Test123!",
+      "warningMessage": "Should not exceed 40 characters"
+    }
+  ],
+
+  "duplicatedUsername": {
+    "firstName": "Duplicate",
+    "lastName": "User",
+    "password": "2003638=Ti",
+    "confirmPassword": "2003638=Ti",
+    "warningMessage": "Username already exists"
+  },
+
+  "passwordValidation": [
+    {
+      "testName": "Password length is < 8",
+      "firstName": "John",
+      "lastName": "Tester",
+      "username": "pwdtest01",
+      "password": "Te1!abc",
+      "confirmPassword": "Te1!abc",
+      "warningMessage": "Should have at least 8 characters"
+    },
+    {
+      "testName": "Password has no uppercase letter",
+      "firstName": "John",
+      "lastName": "Tester",
+      "username": "pwdtest02",
+      "password": "test123!",
+      "confirmPassword": "test123!",
+      "warningMessage": "Your password must contain minimum 1 upper-case letter"
+    },
+    {
+      "testName": "Password has no lowercase letter",
+      "firstName": "John",
+      "lastName": "Tester",
+      "username": "pwdtest03",
+      "password": "TEST123!",
+      "confirmPassword": "TEST123!",
+      "warningMessage": "Your password must contain minimum 1 lower-case letter"
+    },
+    {
+      "testName": "Password has no number",
+      "firstName": "John",
+      "lastName": "Tester",
+      "username": "pwdtest04",
+      "password": "TestPass!",
+      "confirmPassword": "TestPass!",
+      "warningMessage": "Your password must contain minimum 1 number"
+    },
+    {
+      "testName": "Password has no special character",
+      "firstName": "John",
+      "lastName": "Tester",
+      "username": "pwdtest05",
+      "password": "Test1234",
+      "confirmPassword": "Test1234",
+      "warningMessage": "Your password must contain minimum 1 special character"
+    },
+    {
+      "testName": "Password length is > 64",
+      "firstName": "John",
+      "lastName": "Tester",
+      "username": "pwdtest06",
+      "password": "Aa1!Aa1!Aa1!Aa1!Aa1!Aa1!Aa1!Aa1!Aa1!Aa1!Aa1!Aa1!Aa1!Aa1!Aa1!Aa1!Aa1!",
+      "confirmPassword": "Aa1!Aa1!Aa1!Aa1!Aa1!Aa1!Aa1!Aa1!Aa1!Aa1!Aa1!Aa1!Aa1!Aa1!Aa1!Aa1!Aa1!",
+      "warningMessage": "Should not exceed 64 characters"
+    }
+  ],
+
+  "confirmPassword": {
+    "firstName": "John",
+    "lastName": "Tester",
+    "username": "confirmtest01",
+    "password": "Test123!",
+    "confirmPassword": "Test123!!",
+    "warningMessage": "Passwords do not match"
+  }
+}
